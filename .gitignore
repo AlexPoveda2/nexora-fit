@@ -6,8 +6,15 @@
 node_modules/
 .next/
 out/
+build/
 next-env.d.ts
 *.tsbuildinfo
+.vercel
+npm-debug.log*
+
+# Sistema
+.DS_Store
+*.pem
 
 # Pruebas y temporales (guía front §11.6)
 coverage/
