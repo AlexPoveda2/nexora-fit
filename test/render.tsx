@@ -2,11 +2,15 @@ import { render, type RenderOptions } from "@testing-library/react";
 import type { ReactElement } from "react";
 
 import type { Container } from "@/core/container";
-import { ContainerContext } from "@/core/use-container";
+import { Providers } from "@/core/providers";
 
-/** Contenedor de fakes vacíos: cada fake nuevo de test/fakes/ se agrega aquí. */
+import { FakeHealthRepository } from "./fakes/fake-health-repository";
+
+/** Contenedor de fakes por defecto: cada fake nuevo de test/fakes/ se agrega aquí. */
 export function emptyContainer(): Container {
-  return {};
+  return {
+    health: new FakeHealthRepository(),
+  };
 }
 
 /** Renderiza con el contenedor de fakes; la prueba solo pasa los puertos que usa. */
@@ -17,9 +21,7 @@ export function renderWithContainer(
 ) {
   const container: Container = { ...emptyContainer(), ...fakes };
   return render(ui, {
-    wrapper: ({ children }) => (
-      <ContainerContext.Provider value={container}>{children}</ContainerContext.Provider>
-    ),
+    wrapper: ({ children }) => <Providers container={container}>{children}</Providers>,
     ...options,
   });
 }
