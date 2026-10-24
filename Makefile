@@ -3,9 +3,13 @@
 help:             ## Lista los comandos
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | sed -E 's/:.*## /\t/'
 
-setup:            ## Instala dependencias y hooks de git (usa Node 24: `nvm use`)
+setup:            ## Instala dependencias, hooks de git y .env (usa Node 24: `nvm use`)
 	npm ci
 	uvx pre-commit install
+	test -f .env || cp .env.example .env
+
+-include .env
+export
 
 PORT ?= 3000
 dev:              ## Front con recarga (PORT=3010 si el 3000 está ocupado)

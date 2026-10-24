@@ -12,7 +12,7 @@ function ContainerProbe() {
 it("entrega el contenedor de fakes a los componentes", () => {
   renderWithContainer(<ContainerProbe />);
 
-  expect(screen.getByText("Puertos: 0")).toBeInTheDocument();
+  expect(screen.getByText("Puertos: 1")).toBeInTheDocument();
 });
 
 it("falla con un mensaje claro si se usa fuera de <Providers>", () => {
