@@ -39,4 +39,15 @@ public/
 docs/adr/                    # decisiones de arquitectura
 ```
 
-El proyecto Next.js ejecutable (`package.json`, ESLint con las reglas de capas, Jest, proxy `/api/v1`) llega con la historia **HUF-1**. Como el repo ya no está vacío, `create-next-app` se ejecuta en una carpeta temporal y se copian los archivos.
+## Correr en local
+
+Requisitos: **Node 24** (`nvm use` toma la versión de `.nvmrc`) y **uv** (para `uvx pre-commit` y `uvx commitizen`, igual que en el back).
+
+```bash
+nvm use
+make setup      # npm ci + hooks de pre-commit y commit-msg
+make dev        # http://localhost:3000 (PORT=3010 make dev si está ocupado)
+make check      # lint (ESLint con las capas + Prettier), tipos y build: debe pasar antes de un PR
+```
+
+`make help` lista todos los comandos. Jest, el proxy `/api/v1` hacia el back y `make openapi` llegan con las siguientes tareas de **HUF-1**.
