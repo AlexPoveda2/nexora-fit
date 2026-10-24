@@ -1,4 +1,4 @@
-.PHONY: help setup dev lint format typecheck test build check
+.PHONY: help setup dev lint format typecheck test build check openapi
 
 help:             ## Lista los comandos
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | sed -E 's/:.*## /\t/'
@@ -33,3 +33,7 @@ build:            ## Build de producción
 	npx next build
 
 check: lint typecheck test build   ## Lo que debe pasar antes de un PR
+
+OPENAPI_URL ?= $(API_URL)/openapi.json
+openapi:          ## Regenera los tipos de la API (OPENAPI_URL=... para apuntar a dev)
+	npx openapi-typescript $(OPENAPI_URL) -o src/shared/infrastructure/api/schema.d.ts

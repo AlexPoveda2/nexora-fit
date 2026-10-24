@@ -60,7 +60,20 @@ El navegador nunca llama al back directo: todo pasa por `/api/v1`, que Next rees
 1. Corre el back (`nexorafit-back`) — en un árbol de trabajo aparte si ya tiene una rama abierta
    en el tuyo: `git worktree add ../nexorafit-back-<tarea> develop`, luego `make db`, `make migrate`,
    `make api` (expone la API en `http://localhost:8000`).
-2. Ajusta `API_URL` en `.env` si usas otro puerto.
+2. Ajusta `API_URL` en `.env` si usas otro puerto. Se valida con Zod al arrancar
+   (`src/shared/infrastructure/env.ts`): si falta, el build/dev falla con un mensaje claro.
 3. `make dev` y abre `http://localhost:3000`: la home muestra el estado de `/api/v1/health`.
 
-`make openapi` llega con **TF-5**.
+### Tipos de la API
+
+`src/shared/infrastructure/api/schema.d.ts` se genera con `openapi-typescript` a partir del
+OpenAPI de FastAPI y **se versiona** (el build no depende de que la API esté arriba, y el diff
+del PR muestra qué cambió del contrato). Se regenera con:
+
+```bash
+make openapi                                      # usa $API_URL/openapi.json
+make openapi OPENAPI_URL=https://dev.api.../openapi.json   # o apunta a dev
+```
+
+La UI nunca importa `schema.d.ts` directo: solo `infrastructure/` lo usa para mapear la
+respuesta de la API al tipo de dominio de cada feature.
