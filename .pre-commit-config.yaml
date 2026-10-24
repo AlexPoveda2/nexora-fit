@@ -1,0 +1,49 @@
+default_install_hook_types: [pre-commit, commit-msg]
+# Sin esto, los hooks sin "stages" también corren en commit-msg sobre .git/COMMIT_EDITMSG.
+default_stages: [pre-commit]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=1000]
+      - id: detect-private-key
+      - id: mixed-line-ending
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.0
+    hooks:
+      - id: gitleaks
+
+  - repo: local
+    hooks:
+      - id: eslint
+        name: eslint (estilo + arquitectura limpia)
+        entry: npx eslint --fix --max-warnings=0
+        language: system
+        files: \.(ts|tsx|js|mjs)$
+        exclude: ^src/shared/infrastructure/api/schema\.d\.ts$
+      - id: prettier
+        name: prettier
+        entry: npx prettier --write --ignore-unknown
+        language: system
+        types: [text]
+      - id: tsc
+        name: tipos (tsc)
+        entry: npx tsc --noEmit
+        language: system
+        files: \.(ts|tsx)$
+        pass_filenames: false
+      - id: commitizen
+        name: mensaje de commit (Conventional Commits)
+        entry: uvx --from commitizen cz check --allow-abort --commit-msg-file
+        language: system
+        stages: [commit-msg]
