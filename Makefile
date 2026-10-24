@@ -1,4 +1,4 @@
-.PHONY: help setup dev lint format typecheck build check
+.PHONY: help setup dev lint format typecheck test build check
 
 help:             ## Lista los comandos
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | sed -E 's/:.*## /\t/'
@@ -22,7 +22,10 @@ format:           ## Formatea y corrige lo automático
 typecheck:        ## tsc
 	npx tsc --noEmit
 
+test:             ## Pruebas con Jest (ARGS="-t nombre" para filtrar)
+	npx jest $(ARGS)
+
 build:            ## Build de producción
 	npx next build
 
-check: lint typecheck build   ## Lo que debe pasar antes de un PR (Jest se suma con TF-3)
+check: lint typecheck test build   ## Lo que debe pasar antes de un PR
