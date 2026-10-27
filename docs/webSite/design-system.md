@@ -4,7 +4,7 @@
 - **Fecha:** 2026-10-24
 - **Aplica a:** el repositorio `nexora-fit`: sitio público, área del alumno y panel de admin.
 - **Para:** Alex, Santiago y los agentes de IA que construyan pantallas. También sirve de referencia para armar los estilos y componentes en Adobe XD (§14).
-- **Base:** planeación de la página web (§3, §4, §6 y §10) y reunión del 2026-10-12, en el repo `nexorafit-back`; [planeación del front](../planeacion/planeacion-front.md) y [guía de desarrollo del front](../../guia-desarrollo-front.md) (§8).
+- **Base:** planeación de la página web (§3, §4, §6 y §10) y reunión del 2026-10-12, en el repo `nexorafit-back`; [planeación del front](../planeacion/planeacion-front.md) y [guía de desarrollo del front](../guia-desarrollo-front.md) (§8).
 - **Historia:** HUF-2 · Diseño. Al implementarla, los tokens de §3 a §8 pasan a `src/app/globals.css` y los componentes a `src/shared/ui/`.
 
 > ⚠️ **Confidencial.** Mismas reglas que la planeación.

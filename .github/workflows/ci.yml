@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [develop, main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: make check
+    runs-on: ubuntu-latest
+    env:
+      # El build solo necesita que env.ts (Zod) vea una URL válida: no llama al back en CI.
+      API_URL: http://localhost:8000
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - name: Dependencias (package-lock.json)
+        run: npm ci
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: pre-commit (ESLint con capas, Prettier, tipos, secretos)
+        run: uvx pre-commit run --all-files --show-diff-on-failure
+
+      - name: Mensajes de commit (Conventional Commits)
+        if: github.event_name == 'pull_request'
+        run: uvx --from commitizen cz check --rev-range ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
+
+      - name: Pruebas (Jest)
+        run: npm run test -- --ci
+
+      - name: Build de producción
+        run: npm run build
