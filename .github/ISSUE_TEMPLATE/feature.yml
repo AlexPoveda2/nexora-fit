@@ -1,0 +1,49 @@
+name: Historia de usuario
+description: Una funcionalidad nueva o un cambio de comportamiento (guía front §11.2)
+title: "feat: "
+labels: ["tipo:feature"]
+body:
+  - type: textarea
+    id: historia
+    attributes:
+      label: Historia
+      description: Como <rol>, quiero <acción>, para <beneficio>.
+      placeholder: "Como alumno, quiero entrar con mi código, para no crear una cuenta."
+    validations:
+      required: true
+
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Criterios de aceptación
+      description: Uno por línea, en formato Dado/cuando/entonces.
+      placeholder: |
+        - [ ] Dado que tengo un código válido, cuando lo escribo en /acceder, entonces entro a mis planes.
+        - [ ] ...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: capas
+    attributes:
+      label: Capas afectadas
+      options:
+        - label: dominio
+        - label: casos de uso
+        - label: puertos
+        - label: adaptador de entrada
+        - label: adaptador de salida
+        - label: web
+        - label: infra
+
+  - type: input
+    id: referencia
+    attributes:
+      label: Referencia
+      placeholder: "planeación front §5, guía front §9.3"
+
+  - type: textarea
+    id: fuera-de-alcance
+    attributes:
+      label: Fuera de alcance
+      placeholder: "- ..."

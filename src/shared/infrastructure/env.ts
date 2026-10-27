@@ -6,8 +6,15 @@ import { z } from "zod";
 // NEXT_PUBLIC_TURNSTILE_SITE_KEY llega con el formulario de acceso).
 const envSchema = z.object({
   API_URL: z.url(),
+  // Hasta el lanzamiento, noindex en todos los entornos (guía front §9.5). Solo se lee en
+  // server components y route handlers (robots.ts), nunca en código de cliente.
+  NEXT_PUBLIC_INDEXABLE: z
+    .string()
+    .optional()
+    .transform((value) => value === "true"),
 });
 
 export const env = envSchema.parse({
   API_URL: process.env.API_URL,
+  NEXT_PUBLIC_INDEXABLE: process.env.NEXT_PUBLIC_INDEXABLE,
 });

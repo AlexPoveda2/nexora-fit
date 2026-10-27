@@ -2,7 +2,7 @@
 
 - **Versión:** 1.0 (borrador)
 - **Fecha:** 2026-10-23
-- **Base:** planeación de la página web y contrato de la API (repo `nexorafit-back`, `docs/planeacion/`), y [guía de desarrollo del front](../../guia-desarrollo-front.md)
+- **Base:** planeación de la página web y contrato de la API (repo `nexorafit-back`, `docs/planeacion/`), y [guía de desarrollo del front](../guia-desarrollo-front.md)
 - **Seguimiento:** Notion → *NexoraFit · Front* (historias `HUF-n` y tareas `TF-n`). Las historias del back son `HUB-n`.
 
 > ⚠️ **Confidencial.** Mismas reglas que la planeación.

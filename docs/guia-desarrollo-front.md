@@ -100,6 +100,8 @@ Muchas pantallas solo leen datos ("traer el catálogo"). En ese caso el hook de 
 - En los Server Components, `src/core/server-container.ts` (marcado `server-only`) crea otro contenedor con la URL interna de la API.
 - En las pruebas se pasa un contenedor con *fakes* (§11.3). No hace falta MSW ni mocks de Axios para probar la UI.
 
+> **Ajuste de la planeación (§10): puertos compartidos entre features.** Turnstile lo usan `checkout`, `access` y `admin/auth`. En vez de repetir `CaptchaProvider` (puerto) y su adaptador en cada una, el puerto vive en `shared/domain/ports.ts` y la implementación en `shared/infrastructure/`, y cada feature lo consume desde ahí. Las reglas de `boundaries` de §2.5 ya lo permiten sin ajustes: `application` puede importar `shared-domain`, e `infrastructure` puede importar `shared-infra`. Se aplica la primera vez que una feature necesita Turnstile; `health` (TF-4/TF-5) no lo necesitó porque no tiene nada que compartir todavía.
+
 ### 2.5 La arquitectura se valida sola: ESLint
 
 Las reglas de §2.1 se verifican en cada commit y en la CI con `eslint-plugin-boundaries` (capas) y `no-restricted-imports` (frameworks prohibidos en el núcleo). Es el equivalente a `import-linter` del back.
@@ -179,6 +181,14 @@ export default [
 - La sintaxis de plantillas (`${from.feature}`) es la de `eslint-plugin-boundaries` v5. Si se instala otra versión, se ajusta y se deja en el PR.
 
 > **Lección de proyectos anteriores:** en los fronts donde los componentes llamaban a Axios directamente, cambiar un campo de la API rompía pantallas en lugares inesperados y no se podían probar sin levantar el back. Con estas reglas, un componente que importe `axios` no pasa el commit.
+
+> **Ajuste aplicado en TF-2 (`eslint.config.mjs` real):**
+> - La versión instalada es `eslint-plugin-boundaries` **5.4.0** (la 7 cambia la clave de la regla a `boundaries/dependencies`).
+> - `src/features/admin/*/<capa>/**` necesita su propio patrón **antes** del genérico `src/features/*/<capa>/**`, porque admin está un nivel más adentro y el patrón genérico no lo reconoce.
+> - `app` se permite a sí mismo (`from: "app", allow: ["app", ...]`): `src/app/layout.tsx` importa `./globals.css`, y sin ese permiso ESLint lo bloqueaba.
+> - La UI restringe `"**/infrastructure"` y `"**/infrastructure/**"` (no solo la ruta con alias) para cubrir imports relativos a la infraestructura de otra feature.
+> - `src/shared/infrastructure/api/schema.d.ts` (generado por `make openapi`, TF-5) está en `ignores` de ESLint y en `.prettierignore`: no se edita a mano y no tiene sentido formatearlo.
+> - `app` también puede importar `shared-infra` (TF-6), pero solo para los archivos de convención de Next sin lógica de negocio (`robots.ts`, `sitemap.ts`, `middleware.ts`) que necesitan leer `env.ts`. Una página o un componente de `src/app/` sigue sin poder tocar `infrastructure/` de una feature.
 
 ### 2.6 Receta: cómo se hace un cambio típico
 
@@ -654,6 +664,8 @@ nexora-fit/
 - Las fuentes se cargan con `next/font/google` (Bebas Neue para títulos, Inter para textos). Nada de `<link>` a Google Fonts.
 - **Rojo solo para lo que vende:** botones de compra, precios y destacados. Si todo es rojo, nada destaca.
 - No se escriben colores sueltos (`text-[#E10600]`): siempre el token (`text-rojo`).
+
+> **Ajuste aplicado al crear `docs/webSite/design-system.md`:** `--primary` de shadcn **no es el rojo**, es negro/blanco (según el tema claro u oscuro de cada área) — si `--primary` fuera rojo, todos los controles de shadcn (botones por defecto, focus rings, switches) saldrían rojos, y el rojo deja de significar "esto vende". El rojo vive en un token propio, `--cta`, que solo usan los componentes de compra. También se agregan `--acero` (`#6B6B6B`, texto secundario sobre fondo claro) y `--rojo-vivo` (`#FF3B30`, texto en rojo sobre fondo oscuro), porque el gris y el rojo de la paleta original no pasaban el contraste mínimo (4.5:1) en esas combinaciones. El detalle completo, con la tabla de contraste y los temas por área, está en `docs/webSite/design-system.md`.
 
 ### 8.2 Componentes
 - shadcn se instala con su CLI en `src/shared/ui/` (configurado en `components.json`). Se pueden ajustar, pero **no reciben lógica de negocio**.

@@ -6,7 +6,7 @@ Web de la plataforma de planes de entrenamiento: Next.js 15 (App Router) + TypeS
 
 ## Documentos
 - [Planeación del front](docs/planeacion/planeacion-front.md)
-- [Guía de desarrollo del front](guia-desarrollo-front.md)
+- [Guía de desarrollo del front](docs/guia-desarrollo-front.md)
 - Planeación del producto y contrato de la API: repo `nexorafit-back`, `docs/planeacion/`.
 
 ## Mapa de carpetas

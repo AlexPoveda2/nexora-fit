@@ -1,0 +1,42 @@
+# Blueprint de Render (guía front §13.2). Los secretos se cargan solo en el panel: sync: false.
+# Dev despliega desde develop y prod desde main; API_URL apunta al servicio de nexorafit-back
+# del mismo ambiente (se setea a mano porque Render no resuelve servicios entre blueprints).
+
+services:
+  - type: web
+    name: nexora-fit-dev
+    runtime: node
+    plan: free
+    region: virginia
+    branch: develop
+    autoDeployTrigger: checksPass
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start -- --port $PORT
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: API_URL
+        sync: false # https://nexorafit-api-dev.onrender.com
+      - key: NEXT_PUBLIC_INDEXABLE
+        value: "false"
+
+  - type: web
+    name: nexora-fit-prod
+    runtime: node
+    plan: starter
+    region: virginia
+    branch: main
+    autoDeployTrigger: checksPass
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start -- --port $PORT
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: API_URL
+        sync: false # https://nexorafit-api-prod.onrender.com
+      - key: NEXT_PUBLIC_INDEXABLE
+        value: "false" # se cambia a "true" el día del lanzamiento (guía front §9.5)

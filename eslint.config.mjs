@@ -99,9 +99,19 @@ const eslintConfig = [
               allow: [sameFeature("ui"), sameFeature("domain"), sameFeature("application")],
             },
             // "app" se importa a sí mismo: layout.tsx usa ./globals.css (ajuste a la guía §2.5).
+            // shared-infra se permite solo para los archivos de convención de Next sin lógica
+            // de negocio (robots.ts, sitemap.ts, middleware.ts), que leen env.ts (TF-6).
             {
               from: "app",
-              allow: ["app", "feature-api", "core", "shared-ui", "shared-lib", "shared-domain"],
+              allow: [
+                "app",
+                "feature-api",
+                "core",
+                "shared-ui",
+                "shared-lib",
+                "shared-domain",
+                "shared-infra",
+              ],
             },
             { from: ["core", "di"], allow: ["*"] },
             {
