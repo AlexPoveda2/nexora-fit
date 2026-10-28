@@ -189,6 +189,7 @@ export default [
 > - La UI restringe `"**/infrastructure"` y `"**/infrastructure/**"` (no solo la ruta con alias) para cubrir imports relativos a la infraestructura de otra feature.
 > - `src/shared/infrastructure/api/schema.d.ts` (generado por `make openapi`, TF-5) está en `ignores` de ESLint y en `.prettierignore`: no se edita a mano y no tiene sentido formatearlo.
 > - `app` también puede importar `shared-infra` (TF-6), pero solo para los archivos de convención de Next sin lógica de negocio (`robots.ts`, `sitemap.ts`, `middleware.ts`) que necesitan leer `env.ts`. Una página o un componente de `src/app/` sigue sin poder tocar `infrastructure/` de una feature.
+> - `shared-ui` se permite a sí mismo (TF-7): los componentes de shadcn se componen entre ellos (`Dialog` usa `Button`, `Command` usa `InputGroup`). `shared-infra` y `shared-lib` siguen sin poder importar `shared-ui`.
 
 ### 2.6 Receta: cómo se hace un cambio típico
 

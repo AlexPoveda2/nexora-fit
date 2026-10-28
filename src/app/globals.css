@@ -1,2 +1,139 @@
-/* Los tokens de marca y los de shadcn llegan con TF-7 (docs/webSite/design-system.md §9). */
 @import "tailwindcss";
+@import "tw-animate-css";
+/* Custom variants (data-open, data-closed...) y los keyframes de accordion que generan los
+   componentes de shadcn (docs/webSite/design-system.md §9: "npx shadcn init genera una parte;
+   se ajusta a esto"). No define colores: los de abajo son los únicos que se usan. */
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* 1. Paleta de marca: solo la usan los tokens semánticos y casos puntuales documentados */
+@theme {
+  --color-negro: #0b0b0b;
+  --color-carbon: #161616;
+  --color-grafito: #2a2a2a;
+  --color-blanco: #ffffff;
+  --color-humo: #f5f5f5;
+  --color-niebla: #e5e5e5;
+  --color-gris: #8a8a8a;
+  --color-acero: #6b6b6b;
+  --color-rojo: #e10600;
+  --color-rojo-oscuro: #b80500;
+  --color-rojo-vivo: #ff3b30;
+
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --text-hero: clamp(3rem, 1.8rem + 5.3vw, 6rem);
+  --text-hero--line-height: 0.95;
+  --text-display-1: clamp(2.5rem, 1.9rem + 2.6vw, 4rem);
+  --text-display-1--line-height: 1;
+  --text-display-2: clamp(2rem, 1.6rem + 1.75vw, 3rem);
+  --text-display-2--line-height: 1;
+  --text-display-3: clamp(1.5rem, 1.3rem + 0.9vw, 2rem);
+  --text-display-3--line-height: 1.1;
+  --text-price-lg: clamp(2.5rem, 2.1rem + 1.75vw, 3.5rem);
+  --text-price-lg--line-height: 1;
+}
+
+/* 2. Tokens semánticos: tema claro */
+:root {
+  --radius: 0.5rem;
+  --background: var(--color-blanco);
+  --foreground: var(--color-negro);
+  --card: var(--color-blanco);
+  --card-foreground: var(--color-negro);
+  --popover: var(--color-blanco);
+  --popover-foreground: var(--color-negro);
+  --primary: var(--color-negro);
+  --primary-foreground: var(--color-blanco);
+  --secondary: var(--color-humo);
+  --secondary-foreground: var(--color-negro);
+  --muted: var(--color-humo);
+  --muted-foreground: var(--color-acero);
+  --accent: var(--color-humo);
+  --accent-foreground: var(--color-negro);
+  --border: var(--color-niebla);
+  --input: var(--color-gris);
+  --ring: var(--color-negro);
+  --cta: var(--color-rojo);
+  --cta-hover: var(--color-rojo-oscuro);
+  --cta-foreground: var(--color-blanco);
+  --price: var(--color-rojo);
+  --destructive: #b42318;
+  --danger: #b42318;
+  --success: #15803d;
+  --warning: #b45309;
+}
+
+/* 3. Tema oscuro: se activa con class="dark" en <section>, en el layout del alumno o en la barra */
+.dark {
+  --background: var(--color-negro);
+  --foreground: var(--color-blanco);
+  --card: var(--color-carbon);
+  --card-foreground: var(--color-blanco);
+  --popover: var(--color-carbon);
+  --popover-foreground: var(--color-blanco);
+  --primary: var(--color-blanco);
+  --primary-foreground: var(--color-negro);
+  --secondary: var(--color-grafito);
+  --secondary-foreground: var(--color-blanco);
+  --muted: var(--color-carbon);
+  --muted-foreground: var(--color-gris);
+  --accent: var(--color-grafito);
+  --accent-foreground: var(--color-blanco);
+  --border: var(--color-grafito);
+  --ring: var(--color-blanco);
+  --price: var(--color-rojo-vivo);
+  --danger: #f87171;
+  --success: #4ade80;
+  --warning: #fbbf24;
+}
+
+/* 4. Utilidades de Tailwind a partir de los tokens (bg-cta, text-price, text-muted-foreground…) */
+@theme inline {
+  --font-display: var(--font-bebas-neue);
+  --font-sans: var(--font-inter);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-cta: var(--cta);
+  --color-cta-hover: var(--cta-hover);
+  --color-cta-foreground: var(--cta-foreground);
+  --color-price: var(--price);
+  --color-destructive: var(--destructive);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  :focus-visible {
+    @apply outline-ring outline-2 outline-offset-2;
+  }
+}
