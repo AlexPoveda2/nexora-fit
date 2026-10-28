@@ -115,8 +115,14 @@ const eslintConfig = [
             },
             { from: ["core", "di"], allow: ["*"] },
             {
-              from: ["shared-infra", "shared-ui", "shared-lib"],
+              from: ["shared-infra", "shared-lib"],
               allow: ["shared-domain", "shared-lib"],
+            },
+            // shared-ui se permite a sí mismo: los componentes de shadcn se componen entre
+            // ellos (Dialog usa Button, Command usa InputGroup) (TF-7).
+            {
+              from: "shared-ui",
+              allow: ["shared-domain", "shared-lib", "shared-ui"],
             },
           ],
         },
