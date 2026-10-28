@@ -17,22 +17,24 @@ function toAppError(error: AxiosError): AppError {
 
   if (body?.error) {
     return new AppError(
-      body.error.code ?? "unknown_error",
+      body.error.code ?? "UNKNOWN_ERROR",
       status,
       body.error.message,
       body.error.details,
     );
   }
 
+  // Mismo código "NETWORK_ERROR" para timeout y sin respuesta: para quien usa la app,
+  // ambos son "no hay conexión" (shared/lib/error-messages.ts los traduce igual, TF-9).
   if (error.code === "ECONNABORTED") {
-    return new AppError("timeout", 0, "La solicitud tardó demasiado.");
+    return new AppError("NETWORK_ERROR", 0, "La solicitud tardó demasiado.");
   }
 
   if (!error.response) {
-    return new AppError("network_error", 0, "No se pudo conectar con el servidor.");
+    return new AppError("NETWORK_ERROR", 0, "No se pudo conectar con el servidor.");
   }
 
-  return new AppError("unknown_error", status, error.message);
+  return new AppError("UNKNOWN_ERROR", status, error.message);
 }
 
 // Cliente Axios compartido: credenciales de cookie, timeout corto y errores normalizados a
