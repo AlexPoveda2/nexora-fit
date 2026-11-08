@@ -247,11 +247,13 @@ describe("getPlan", () => {
     await expect(new HttpCatalogRepository(http).getPlan("boxeo")).rejects.toBe(error);
   });
 
-  it("escapa el slug en la URL", async () => {
-    const http = respondingWith(planResponse);
+  it.each(["../admin", "boxeo%2F..", "Boxeo", "boxeo/levels", ""])(
+    "devuelve null sin llamar a la API si el slug no tiene el formato de la API (%p)",
+    async (slug) => {
+      const http = respondingWith(planResponse);
 
-    await new HttpCatalogRepository(http).getPlan("../admin");
-
-    expect(http.get).toHaveBeenCalledWith("/api/v1/plans/..%2Fadmin");
-  });
+      await expect(new HttpCatalogRepository(http).getPlan(slug)).resolves.toBeNull();
+      expect(http.get).not.toHaveBeenCalled();
+    },
+  );
 });

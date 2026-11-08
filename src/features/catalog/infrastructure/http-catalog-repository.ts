@@ -26,17 +26,30 @@ function isLevel(value: string): value is LevelName {
   return LEVELS.includes(value);
 }
 
+function hasKnownLevel(
+  level: Schemas["PlanLevelSchema"],
+): level is Schemas["PlanLevelSchema"] & { level: LevelName } {
+  return isLevel(level.level);
+}
+
 function toBlockType(value: string): BlockType {
   return BLOCK_TYPES.includes(value) ? (value as BlockType) : "other";
 }
+
+const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 // La API envía "" cuando el plan aún no tiene foto; para la UI es lo mismo que no tenerla.
 function toImageUrl(value: string | null | undefined): string | null {
   return value ? value : null;
 }
 
-function toProductRef(product: Schemas["ProductRefSchema"] | null): ProductRef | null {
-  return product ? { slug: product.slug, priceCop: product.price_cop } : null;
+// Pack y acceso directo comparten slug y price_cop con ProductRefSchema.
+function toProductRef(product: { slug: string; price_cop: number }): ProductRef {
+  return { slug: product.slug, priceCop: product.price_cop };
+}
+
+function toOptionalProductRef(product: Schemas["ProductRefSchema"] | null): ProductRef | null {
+  return product ? toProductRef(product) : null;
 }
 
 function toPlanSummary(plan: Schemas["CatalogPlanSchema"]): PlanSummary {
@@ -47,7 +60,7 @@ function toPlanSummary(plan: Schemas["CatalogPlanSchema"]): PlanSummary {
     tagline: plan.tagline,
     imageUrl: toImageUrl(plan.image_url),
     levels: plan.levels.filter(isLevel),
-    product: toProductRef(plan.product),
+    product: toOptionalProductRef(plan.product),
   };
 }
 
@@ -55,15 +68,9 @@ function toCatalog(response: CatalogResponse): Catalog {
   const { pack, direct_access: directAccess } = response;
   return {
     plans: response.plans.map(toPlanSummary),
-    pack: pack
-      ? { slug: pack.slug, priceCop: pack.price_cop, fullPriceCop: pack.full_price_cop }
-      : null,
+    pack: pack ? { ...toProductRef(pack), fullPriceCop: pack.full_price_cop } : null,
     directAccess: directAccess
-      ? {
-          slug: directAccess.slug,
-          priceCop: directAccess.price_cop,
-          accessDays: directAccess.access_days,
-        }
+      ? { ...toProductRef(directAccess), accessDays: directAccess.access_days }
       : null,
   };
 }
@@ -92,19 +99,13 @@ function toPublicPlan(response: PublicPlanResponse): PublicPlan {
     imageUrl: toImageUrl(response.image_url),
     audience: response.audience,
     equipment: response.equipment,
-    levels: response.levels.flatMap((level) =>
-      isLevel(level.level)
-        ? [
-            {
-              level: level.level,
-              weeks: level.weeks,
-              daysPerWeek: level.days_per_week,
-              minutesPerSession: level.minutes_per_session,
-              outcome: level.outcome,
-            },
-          ]
-        : [],
-    ),
+    levels: response.levels.filter(hasKnownLevel).map((level) => ({
+      level: level.level,
+      weeks: level.weeks,
+      daysPerWeek: level.days_per_week,
+      minutesPerSession: level.minutes_per_session,
+      outcome: level.outcome,
+    })),
     syllabus: response.syllabus.map((group) => ({
       category: { code: group.category.code, name: group.category.name },
       videos: group.videos.map((video) => ({ id: video.id, title: video.title })),
@@ -117,8 +118,8 @@ function toPublicPlan(response: PublicPlanResponse): PublicPlan {
         }
       : null,
     sampleDay: response.sample_day ? toSampleDay(response.sample_day) : null,
-    product: toProductRef(response.product),
-    pack: toProductRef(response.pack),
+    product: toOptionalProductRef(response.product),
+    pack: toOptionalProductRef(response.pack),
   };
 }
 
@@ -133,10 +134,11 @@ export class HttpCatalogRepository implements CatalogRepository {
   }
 
   async getPlan(slug: string): Promise<PublicPlan | null> {
+    // Un slug fuera del formato no puede existir: se responde 404 sin llamar a la API y sin
+    // armar rutas raras (el back decodifica %2F antes de enrutar).
+    if (!SLUG.test(slug)) return null;
     try {
-      const { data } = await this.http.get<PublicPlanResponse>(
-        `/api/v1/plans/${encodeURIComponent(slug)}`,
-      );
+      const { data } = await this.http.get<PublicPlanResponse>(`/api/v1/plans/${slug}`);
       return toPublicPlan(data);
     } catch (error) {
       if (error instanceof AppError && error.status === 404) return null;

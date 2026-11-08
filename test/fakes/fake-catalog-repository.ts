@@ -20,16 +20,21 @@ export const sampleCatalog: Catalog = {
 
 /** Catálogo en memoria: `plans` son las páginas públicas que existen, por slug. */
 export class FakeCatalogRepository implements CatalogRepository {
+  // Map y no un objeto: "constructor" o "toString" no deben parecer planes existentes.
+  private readonly plans: Map<string, PublicPlan>;
+
   constructor(
     private readonly catalog: Catalog = sampleCatalog,
-    private readonly plans: Record<string, PublicPlan> = {},
-  ) {}
+    plans: Record<string, PublicPlan> = {},
+  ) {
+    this.plans = new Map(Object.entries(plans));
+  }
 
   async getCatalog(): Promise<Catalog> {
     return this.catalog;
   }
 
   async getPlan(slug: string): Promise<PublicPlan | null> {
-    return this.plans[slug] ?? null;
+    return this.plans.get(slug) ?? null;
   }
 }
