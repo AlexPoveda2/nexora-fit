@@ -1,13 +1,14 @@
-import { HealthStatus } from "@/features/health";
+import { About, Hero, HowItWorks } from "@/features/catalog";
 
-// Página temporal: muestra el estado de /api/v1/health para verificar el proxy (TF-4).
-// Con HUF-3 pasa a ser la landing real. El <main> ya lo pone el layout de (public) (TF-8).
+// Landing (planeación §3). Hero, bienvenida y cómo funciona son contenido fijo: no leen la API
+// y la página se genera estática en el build. Cuando lleguen las secciones con precios
+// (deportes y pack, TF-12) se suma `revalidate = 300` y la lectura del catálogo (guía §5.1).
 export default function HomePage() {
   return (
-    <div className="mx-auto max-w-6xl px-4 py-16">
-      <h1 className="text-3xl font-semibold">Nexora Fit</h1>
-      <p className="mt-2">Esqueleto del frontend.</p>
-      <HealthStatus />
-    </div>
+    <>
+      <Hero />
+      <About />
+      <HowItWorks />
+    </>
   );
 }

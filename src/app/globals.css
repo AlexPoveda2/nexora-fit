@@ -127,6 +127,10 @@
 }
 
 @layer base {
+  /* Los anclas (/#deportes, #como-funciona) no quedan debajo de la barra fija (h-16). */
+  html {
+    @apply scroll-pt-16;
+  }
   * {
     @apply border-border;
   }
