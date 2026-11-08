@@ -491,6 +491,11 @@ Es el stack de los fronts que estamos tomando de referencia (React + Next.js con
 - Los Server Components de `src/app/` solo **leen datos y pasan props**. No tienen lógica, así que no necesitan pruebas propias; se prueban los componentes que reciben esas props.
 - Las páginas privadas **no** se renderizan en el servidor con la sesión del alumno. Así no hay que reenviar cookies desde Next.js a la API y no se cachea por error contenido de un alumno.
 
+> **Ajuste aplicado en TF-11: ISR y la API durante `next build`.** Una página con `revalidate` se prerenderiza en el build y llama a la API en ese momento; en la CI no hay API (§13.1), así que el build no puede depender de ella (igual que `schema.d.ts`, §12).
+> - **Solo lee la API la página que muestra datos de la API.** El contenido fijo (hero, bienvenida, cómo funciona) no la llama: la landing de TF-11 se genera estática y el build pasa sin API.
+> - **Cuando una página pública necesite el catálogo** (deportes y pack, TF-12), solo **durante el build** (`process.env.NEXT_PHASE === "phase-production-build"`) se captura el error de la API y la página se genera sin las secciones que dependen de ella (sin precios, sin un estado de error visible); la primera revalidación (`revalidate = 300`) la completa. **En ejecución el error no se captura:** si la API falla al revalidar, Next sigue sirviendo la última versión buena en vez de guardar una sin precios, y la primera visita sin caché cae en `error.tsx`.
+> - Se descartó hacer la página dinámica en la CI: la CI dejaría de probar el build que se despliega.
+
 ### 5.2 Rutas
 
 Los nombres de las rutas son los de la planeación (§2), en español porque son URLs:

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/shared/ui/button";
+import { Container } from "@/shared/ui/container";
 import {
   Sheet,
   SheetClose,
@@ -37,7 +38,7 @@ export function Header() {
         scrolled ? "shadow-sm" : ""
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+      <Container className="flex h-16 items-center justify-between">
         <Link href="/" className="font-display text-2xl tracking-wide">
           NEXORA FIT
         </Link>
@@ -75,7 +76,7 @@ export function Header() {
             </SheetContent>
           </Sheet>
         </div>
-      </div>
+      </Container>
     </header>
   );
 }

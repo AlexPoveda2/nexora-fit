@@ -17,3 +17,6 @@ export type {
   SampleDay,
   SyllabusGroup,
 } from "./domain/public-plan";
+export { About } from "./ui/about";
+export { Hero } from "./ui/hero";
+export { HowItWorks } from "./ui/how-it-works";

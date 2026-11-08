@@ -17,9 +17,15 @@ const bebasNeue = Bebas_Neue({
 });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
+const description =
+  "Planes de boxeo, calistenia, running y gimnasio con videos de técnica y rutinas listas para seguir.";
+
+// Open Graph para que el link compartido en Instagram se vea bien (guía front §9.5). Las
+// páginas que necesiten otro título o imagen lo sobrescriben con su propia metadata.
 export const metadata: Metadata = {
   title: "Nexora Fit",
-  description: "Planes de boxeo, calistenia, running y gimnasio con videos de técnica.",
+  description,
+  openGraph: { title: "Nexora Fit", description, type: "website", locale: "es_CO" },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
