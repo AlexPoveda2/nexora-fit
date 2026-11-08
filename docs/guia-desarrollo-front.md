@@ -683,6 +683,12 @@ nexora-fit/
 - Imágenes siempre con `next/image`, con `sizes` y `priority` solo en el hero.
 - Presupuesto en la landing (Lighthouse en celular): **LCP < 2,5 s**, **CLS < 0,1**. El video del hero es corto, sin sonido, con `poster` y `preload="none"` en conexiones lentas.
 
+> **Ajuste aplicado en TF-13 (cómo se mide y qué movió el LCP):**
+> - Se mide contra `next build` + `next start`, nunca contra `next dev`. `next start` sirve HTTP/1.1 y Lighthouse (simulación Lantern) lo modela como 6 conexiones con arranque lento, lo que infla el LCP ~0,6–1 s frente a producción (HTTP/2). Para una cifra comparable se mide detrás de un proxy HTTP/2 local; la cifra con `--throttling-method=devtools` sirve de contraste.
+> - `experimental.optimizePackageImports: ["radix-ui"]` en `next.config.ts`: shadcn importa los primitivos desde el paquete `radix-ui` y, sin esto, la landing cargaba todos (First Load JS 205 kB → 135 kB).
+> - El `<Image>` del hero lleva `fetchPriority="high"` además de `priority`: en Next 15 `priority` precarga la imagen pero no le da prioridad alta.
+> - Mientras no haya video de Sam, el hero es solo la foto (el LCP); el video, cuando llegue, va con la foto como `poster`.
+
 ### 8.4 Accesibilidad mínima
 - Todo control tiene `label` visible o `aria-label`. Los errores van con `role="alert"`.
 - Contraste AA (texto gris sobre negro: revisar).

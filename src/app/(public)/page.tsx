@@ -3,6 +3,7 @@ import { getServerContainer } from "@/core/server-container";
 import {
   About,
   DirectAccessCta,
+  Faq,
   Hero,
   HowItWorks,
   Includes,
@@ -28,6 +29,7 @@ export default async function HomePage() {
       {catalog?.pack && <PackBanner pack={catalog.pack} />}
       <Includes />
       {catalog?.directAccess && <DirectAccessCta offer={catalog.directAccess} />}
+      <Faq directAccessDays={catalog?.directAccess?.accessDays ?? null} />
     </>
   );
 }

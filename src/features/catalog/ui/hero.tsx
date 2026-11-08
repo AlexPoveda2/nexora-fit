@@ -9,6 +9,10 @@ import heroImage from "./images/hero-provisional.jpg";
 // Hero de la landing (planeación §3.2, design system §11.2): pantalla completa menos la
 // barra fija (h-16), foto con capa oscura y el texto abajo, sobre la zona más oscura (§8.3).
 // La foto es provisional (Unsplash, licencia libre) hasta tener las de Sam (planeación front §8).
+// Video del hero (planeación §3.2): aún no hay un clip de Sam, así que queda la foto. Cuando
+// llegue (5–10 s, sin sonido) va como <video muted loop playsInline poster={foto}
+// preload="none">, sin autoplay con prefers-reduced-motion (guía §8.3, design system §11.2), y
+// la foto sigue siendo el poster y el LCP.
 export function Hero() {
   return (
     <section
@@ -20,6 +24,9 @@ export function Hero() {
         alt=""
         fill
         priority
+        // `priority` precarga la foto, pero Next 15 no le pone prioridad alta ni a la precarga ni
+        // al <img>; es el elemento del LCP en celular (Lighthouse, TF-13).
+        fetchPriority="high"
         sizes="100vw"
         placeholder="blur"
         className="-z-10 object-cover"
