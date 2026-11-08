@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
 import { Slot } from "radix-ui";
 
-// Variantes de docs/webSite/design-system.md §10.3. El texto de la insignia sale de un mapa
+// Variantes de la spec Badge del design system. El texto de la insignia sale de un mapa
 // en el domain/ de la feature (p. ej. el status de una orden), nunca del valor crudo de la API.
 const badgeVariants = cva(
   "inline-flex w-fit shrink-0 items-center gap-1 rounded-sm px-2 py-0.5 text-xs font-medium tracking-wide whitespace-nowrap uppercase [&>svg]:size-3 [&>svg]:pointer-events-none",

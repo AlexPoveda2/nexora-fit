@@ -8,7 +8,7 @@ import { Toaster } from "@/shared/ui/sonner";
 import "./globals.css";
 
 // Bebas Neue (títulos) e Inter (texto) con next/font: sin <link> a Google Fonts (design
-// system §9). Las variables alimentan --font-display y --font-sans en globals.css.
+// system, docs/ADOPCION.md). Las variables alimentan --font-display y --font-sans en globals.css.
 const bebasNeue = Bebas_Neue({
   weight: "400",
   subsets: ["latin"],

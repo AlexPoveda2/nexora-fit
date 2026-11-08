@@ -645,33 +645,13 @@ nexora-fit/
 
 ## 8. UI, diseño y accesibilidad
 
-### 8.1 Tokens de marca (planeación §3.11)
-```css
-/* src/app/globals.css */
-@import "tailwindcss";
+### 8.1 Tokens de marca y design system (planeación §3.11)
+El design system vive en el repositorio [nexorafit-design-system](https://github.com/AlexPoveda2/nexorafit-design-system): `tokens.json` (único juego de tokens), dirección visual (`docs/VISUAL.md`), reglas de UX (`docs/UX.md`), una spec por componente (`components/<Nombre>/README.md`) y un visor sin conexión. `docs/webSite/design-system.md` solo apunta a ese repositorio.
 
-@theme {
-  --color-negro: #0b0b0b;
-  --color-blanco: #ffffff;
-  --color-humo: #f5f5f5;
-  --color-rojo: #e10600;
-  --color-gris: #8a8a8a;
-  --font-display: var(--font-bebas-neue);
-  --font-sans: var(--font-inter);
-}
-
-/* shadcn apunta a los tokens de marca */
-:root {
-  --primary: var(--color-rojo);
-  --background: var(--color-blanco);
-  --foreground: var(--color-negro);
-}
-```
+- Los tokens llegan a `src/app/globals.css` como un bloque generado entre los marcadores `<nexorafit-design-system:tokens>`. **No se editan a mano:** se cambian en `tokens.json` de ese repositorio y se sincronizan desde allá con `npm run sync -- ../nexora-fit --write` (su `docs/ADOPCION.md`). Fuera del bloque quedan los `@import`, `@custom-variant dark` y `@layer base`.
 - Las fuentes se cargan con `next/font/google` (Bebas Neue para títulos, Inter para textos). Nada de `<link>` a Google Fonts.
-- **Rojo solo para lo que vende:** botones de compra, precios y destacados. Si todo es rojo, nada destaca.
-- No se escriben colores sueltos (`text-[#E10600]`): siempre el token (`text-rojo`).
-
-> **Ajuste aplicado al crear `docs/webSite/design-system.md`:** `--primary` de shadcn **no es el rojo**, es negro/blanco (según el tema claro u oscuro de cada área) — si `--primary` fuera rojo, todos los controles de shadcn (botones por defecto, focus rings, switches) saldrían rojos, y el rojo deja de significar "esto vende". El rojo vive en un token propio, `--cta`, que solo usan los componentes de compra. También se agregan `--acero` (`#6B6B6B`, texto secundario sobre fondo claro) y `--rojo-vivo` (`#FF3B30`, texto en rojo sobre fondo oscuro), porque el gris y el rojo de la paleta original no pasaban el contraste mínimo (4.5:1) en esas combinaciones. El detalle completo, con la tabla de contraste y los temas por área, está en `docs/webSite/design-system.md`.
+- **Rojo solo para lo que vende:** botones de compra, precios y destacados (`--cta`, `--price`). `--primary` es negro en claro y blanco en oscuro, nunca rojo.
+- No se escriben colores sueltos (`text-[#E10600]`, `text-white`): siempre el token (`text-cta`, `text-destructive-foreground`). Si falta uno, se agrega primero en `tokens.json`.
 
 ### 8.2 Componentes
 - shadcn se instala con su CLI en `src/shared/ui/` (configurado en `components.json`). Se pueden ajustar, pero **no reciben lógica de negocio**.

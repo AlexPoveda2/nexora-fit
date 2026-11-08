@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { Container } from "@/shared/ui/container";
 
-// Siempre oscuro, sin importar el tema de la página (design system §2, §11.1).
+// Siempre oscuro, sin importar el tema de la página (spec Footer del design system).
 // La cuenta de Instagram es provisional hasta que Sam la confirme (planeación front §8).
 const LEGAL_LINKS = [
   { href: "/terminos", label: "Términos" },
