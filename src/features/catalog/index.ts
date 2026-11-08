@@ -18,5 +18,9 @@ export type {
   SyllabusGroup,
 } from "./domain/public-plan";
 export { About } from "./ui/about";
+export { DirectAccessCta } from "./ui/direct-access-cta";
 export { Hero } from "./ui/hero";
 export { HowItWorks } from "./ui/how-it-works";
+export { Includes } from "./ui/includes";
+export { PackBanner } from "./ui/pack-banner";
+export { SportCards } from "./ui/sport-cards";

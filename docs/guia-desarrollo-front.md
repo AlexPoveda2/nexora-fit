@@ -495,6 +495,7 @@ Es el stack de los fronts que estamos tomando de referencia (React + Next.js con
 > - **Solo lee la API la página que muestra datos de la API.** El contenido fijo (hero, bienvenida, cómo funciona) no la llama: la landing de TF-11 se genera estática y el build pasa sin API.
 > - **Cuando una página pública necesite el catálogo** (deportes y pack, TF-12), solo **durante el build** (`process.env.NEXT_PHASE === "phase-production-build"`) se captura el error de la API y la página se genera sin las secciones que dependen de ella (sin precios, sin un estado de error visible); la primera revalidación (`revalidate = 300`) la completa. **En ejecución el error no se captura:** si la API falla al revalidar, Next sigue sirviendo la última versión buena en vez de guardar una sin precios, y la primera visita sin caché cae en `error.tsx`.
 > - Se descartó hacer la página dinámica en la CI: la CI dejaría de probar el build que se despliega.
+> - **Implementado en TF-12:** `src/core/build-phase.ts` (`readOrSkipDuringBuild`) envuelve la lectura en la página. Solo absorbe `NETWORK_ERROR` (la API no responde): un 4xx/5xx o un error de mapeo rompen el build, para no publicar una landing vacía por un cambio de contrato. Sin API, la landing se genera sin deportes, pack ni acceso directo.
 
 ### 5.2 Rutas
 
