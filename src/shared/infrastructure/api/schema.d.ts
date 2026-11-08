@@ -21,10 +21,273 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/catalog": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Catalog */
+        get: operations["catalog_api_v1_catalog_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/plans/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Plan */
+        get: operations["plan_api_v1_plans__slug__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Order */
+        post: operations["create_order_api_v1_orders_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/checkout/order": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Checkout Order */
+        get: operations["get_checkout_order_api_v1_checkout_order_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/checkout/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Start Checkout Session */
+        post: operations["start_checkout_session_api_v1_checkout_session_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/products/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Product Quote */
+        get: operations["product_quote_api_v1_products__slug__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/access/redeem": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Redeem Code */
+        post: operations["redeem_code_api_v1_access_redeem_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/webhooks/wompi": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Wompi Event */
+        post: operations["wompi_event_api_v1_webhooks_wompi_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** CatalogDirectAccessSchema */
+        CatalogDirectAccessSchema: {
+            /** Slug */
+            slug: string;
+            /** Price Cop */
+            price_cop: number;
+            /** Access Days */
+            access_days: number;
+        };
+        /** CatalogPackSchema */
+        CatalogPackSchema: {
+            /** Slug */
+            slug: string;
+            /** Price Cop */
+            price_cop: number;
+            /** Full Price Cop */
+            full_price_cop: number;
+        };
+        /** CatalogPlanSchema */
+        CatalogPlanSchema: {
+            /** Slug */
+            slug: string;
+            /** Sport */
+            sport: string;
+            /** Name */
+            name: string;
+            /** Tagline */
+            tagline: string;
+            /** Image Url */
+            image_url: string;
+            /** Levels */
+            levels: string[];
+            product: components["schemas"]["ProductRefSchema"] | null;
+        };
+        /** CatalogResponse */
+        CatalogResponse: {
+            /** Plans */
+            plans: components["schemas"]["CatalogPlanSchema"][];
+            pack: components["schemas"]["CatalogPackSchema"] | null;
+            direct_access: components["schemas"]["CatalogDirectAccessSchema"] | null;
+        };
+        /** CheckoutAccessSchema */
+        CheckoutAccessSchema: {
+            /** New Key */
+            new_key: boolean;
+            /** Code */
+            code: string | null;
+            /** Can Start Session */
+            can_start_session: boolean;
+        };
+        /** CheckoutProductRefSchema */
+        CheckoutProductRefSchema: {
+            /** Slug */
+            slug: string;
+            /** Name */
+            name: string;
+        };
+        /** CheckoutStatusResponse */
+        CheckoutStatusResponse: {
+            /** Reference */
+            reference: string;
+            /** Status */
+            status: string;
+            product: components["schemas"]["CheckoutProductRefSchema"];
+            access: components["schemas"]["CheckoutAccessSchema"] | null;
+        };
+        /** CheckoutWidgetSchema */
+        CheckoutWidgetSchema: {
+            /** Public Key */
+            public_key: string;
+            /** Currency */
+            currency: string;
+            /** Amount In Cents */
+            amount_in_cents: number;
+            /** Reference */
+            reference: string;
+            /** Signature Integrity */
+            signature_integrity: string;
+            /** Redirect Url */
+            redirect_url: string;
+            /** Expiration Time */
+            expiration_time: string;
+            customer_data: components["schemas"]["WidgetCustomerDataSchema"];
+        };
+        /** CreateOrderRequest */
+        CreateOrderRequest: {
+            /** Product Slug */
+            product_slug: string;
+            /** Name */
+            name: string;
+            /** Email */
+            email: string;
+            /** Whatsapp */
+            whatsapp: string;
+            /** Accepted Terms Version */
+            accepted_terms_version: string;
+            /** Turnstile Token */
+            turnstile_token: string;
+        };
+        /** CreateOrderResponse */
+        CreateOrderResponse: {
+            /** Reference */
+            reference: string;
+            /** Status */
+            status: string;
+            /** Price Cop */
+            price_cop: number;
+            /** Credit Cop */
+            credit_cop: number;
+            /** Total Cop */
+            total_cop: number;
+            widget: components["schemas"]["CheckoutWidgetSchema"];
+        };
+        /** FreeSampleSchema */
+        FreeSampleSchema: {
+            /** Video Id */
+            video_id: string;
+            /** Title */
+            title: string;
+            /** Poster Url */
+            poster_url?: string | null;
+        };
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
         /** HealthResponse */
         HealthResponse: {
             /**
@@ -37,6 +300,155 @@ export interface components {
              * @enum {string}
              */
             database: "ok" | "error";
+        };
+        /** PlanLevelSchema */
+        PlanLevelSchema: {
+            /** Level */
+            level: string;
+            /** Weeks */
+            weeks: number;
+            /** Days Per Week */
+            days_per_week: number;
+            /** Minutes Per Session */
+            minutes_per_session: number;
+            /** Outcome */
+            outcome: string;
+        };
+        /** ProductQuoteResponse */
+        ProductQuoteResponse: {
+            /** Slug */
+            slug: string;
+            /** Name */
+            name: string;
+            /** Type */
+            type: string;
+            /** Access Days */
+            access_days: number;
+            /** Includes */
+            includes: string[];
+            /** Price Cop */
+            price_cop: number;
+            /** Credit Cop */
+            credit_cop: number;
+            /** Total Cop */
+            total_cop: number;
+            /** Credit Reason */
+            credit_reason: string | null;
+        };
+        /** ProductRefSchema */
+        ProductRefSchema: {
+            /** Slug */
+            slug: string;
+            /** Price Cop */
+            price_cop: number;
+        };
+        /** PublicPlanResponse */
+        PublicPlanResponse: {
+            /** Slug */
+            slug: string;
+            /** Name */
+            name: string;
+            /** Description */
+            description: string;
+            /** Image Url */
+            image_url: string;
+            /** Audience */
+            audience: string[];
+            /** Equipment */
+            equipment: string[];
+            /** Levels */
+            levels: components["schemas"]["PlanLevelSchema"][];
+            /** Syllabus */
+            syllabus: components["schemas"]["SyllabusCategorySchema"][];
+            free_sample: components["schemas"]["FreeSampleSchema"] | null;
+            sample_day: components["schemas"]["SampleDayPreviewSchema"] | null;
+            product: components["schemas"]["ProductRefSchema"] | null;
+            pack: components["schemas"]["ProductRefSchema"] | null;
+        };
+        /** RedeemCodeRequest */
+        RedeemCodeRequest: {
+            /** Code */
+            code: string;
+            /** Turnstile Token */
+            turnstile_token?: string | null;
+        };
+        /** RedeemCodeResponse */
+        RedeemCodeResponse: {
+            /** Name */
+            name: string;
+            /** Replaced Oldest Device */
+            replaced_oldest_device: boolean;
+        };
+        /** SampleBlockSchema */
+        SampleBlockSchema: {
+            /** Type */
+            type: string;
+            /** Title */
+            title: string | null;
+            /** Exercises */
+            exercises: components["schemas"]["SampleExerciseSchema"][];
+        };
+        /** SampleDayPreviewSchema */
+        SampleDayPreviewSchema: {
+            /** Title */
+            title: string;
+            /** Duration Min */
+            duration_min: number;
+            /** Blocks */
+            blocks: components["schemas"]["SampleBlockSchema"][];
+            /** Hidden Blocks */
+            hidden_blocks: number;
+        };
+        /** SampleExerciseSchema */
+        SampleExerciseSchema: {
+            /** Name */
+            name: string;
+            /** Reps Or Time */
+            reps_or_time: string | null;
+        };
+        /** SyllabusCategoryRefSchema */
+        SyllabusCategoryRefSchema: {
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+        };
+        /** SyllabusCategorySchema */
+        SyllabusCategorySchema: {
+            category: components["schemas"]["SyllabusCategoryRefSchema"];
+            /** Videos */
+            videos: components["schemas"]["SyllabusVideoSchema"][];
+        };
+        /** SyllabusVideoSchema */
+        SyllabusVideoSchema: {
+            /** Id */
+            id: string;
+            /** Title */
+            title: string;
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
+            /** Input */
+            input?: unknown;
+            /** Context */
+            ctx?: Record<string, never>;
+        };
+        /** WidgetCustomerDataSchema */
+        WidgetCustomerDataSchema: {
+            /** Email */
+            email: string;
+            /** Full Name */
+            full_name: string;
+            /** Phone Number */
+            phone_number: string;
+            /** Phone Number Prefix */
+            phone_number_prefix: string;
         };
     };
     responses: never;
@@ -72,6 +484,229 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HealthResponse"];
+                };
+            };
+        };
+    };
+    catalog_api_v1_catalog_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CatalogResponse"];
+                };
+            };
+        };
+    };
+    plan_api_v1_plans__slug__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicPlanResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_order_api_v1_orders_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOrderRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CreateOrderResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_checkout_order_api_v1_checkout_order_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CheckoutStatusResponse"];
+                };
+            };
+        };
+    };
+    start_checkout_session_api_v1_checkout_session_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    product_quote_api_v1_products__slug__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProductQuoteResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    redeem_code_api_v1_access_redeem_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RedeemCodeRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RedeemCodeResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    wompi_event_api_v1_webhooks_wompi_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    [key: string]: unknown;
+                };
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

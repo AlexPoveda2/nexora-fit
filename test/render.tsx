@@ -4,11 +4,13 @@ import type { ReactElement } from "react";
 import type { Container } from "@/core/container";
 import { Providers } from "@/core/providers";
 
+import { FakeCatalogRepository } from "./fakes/fake-catalog-repository";
 import { FakeHealthRepository } from "./fakes/fake-health-repository";
 
 /** Contenedor de fakes por defecto: cada fake nuevo de test/fakes/ se agrega aquí. */
 export function emptyContainer(): Container {
   return {
+    catalog: new FakeCatalogRepository(),
     health: new FakeHealthRepository(),
   };
 }
