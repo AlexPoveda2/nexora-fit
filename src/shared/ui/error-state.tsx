@@ -3,7 +3,7 @@ import { CircleAlert } from "lucide-react";
 import { Button } from "@/shared/ui/button";
 
 // CircleAlert en danger, el mensaje ya traducido por shared/lib/error-messages.ts y un botón
-// "Reintentar" (design system §11.1, §12.4). Las consultas lo usan; las mutaciones muestran
+// "Reintentar" (spec ErrorState, UX.md). Las consultas lo usan; las mutaciones muestran
 // su error junto al formulario, no aquí (guía front §15.1).
 type ErrorStateProps = {
   message: string;

@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 
-// Ícono de 24px, título, una línea de explicación y una acción opcional (design system §11.1).
+// Ícono de 24px, título, una línea de explicación y una acción opcional (spec EmptyState).
 type EmptyStateProps = {
   icon: LucideIcon;
   title: string;

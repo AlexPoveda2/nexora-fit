@@ -2,7 +2,7 @@ import type { ComponentProps } from "react";
 
 import { cn } from "@/shared/lib/utils";
 
-// Contenedor del sitio (design system §5.2): ancho máximo de 1152 px y margen lateral de
+// Contenedor del sitio (VISUAL.md del design system): ancho máximo de 1152 px y margen lateral de
 // 16 px en celular, 24 px en tablet y 32 px en escritorio.
 export function Container({ className, ...props }: ComponentProps<"div">) {
   return (

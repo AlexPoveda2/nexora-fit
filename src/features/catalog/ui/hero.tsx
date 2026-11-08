@@ -7,13 +7,13 @@ import { Container } from "@/shared/ui/container";
 import heroImage from "./images/hero-provisional.jpg";
 
 // Hero de la landing (planeación §3.2, design system §11.2): pantalla completa menos la
-// barra fija (h-16), foto con capa oscura y el texto abajo, sobre la zona más oscura (§8.3).
+// barra fija (h-14 en celular, md:h-16), foto con capa oscura y el texto abajo, sobre la zona más oscura (§8.3).
 // La foto es provisional (Unsplash, licencia libre) hasta tener las de Sam (planeación front §8).
 export function Hero() {
   return (
     <section
       aria-labelledby="hero-titulo"
-      className="dark bg-background text-foreground relative isolate flex min-h-[calc(100svh-4rem)] items-end"
+      className="dark bg-background text-foreground relative isolate flex min-h-[calc(100svh-3.5rem)] items-end md:min-h-[calc(100svh-4rem)]"
     >
       <Image
         src={heroImage}

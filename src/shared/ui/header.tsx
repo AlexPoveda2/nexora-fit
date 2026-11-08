@@ -16,10 +16,12 @@ import {
 } from "@/shared/ui/sheet";
 
 // Barra superior fija, siempre oscura sin importar el tema de la sección que tiene debajo
-// (design system §2, §11.1): fondo sólido siempre, para leerse igual en el checkout, /acceder
-// o cualquier página sin hero. El efecto de "transparente sobre el hero" que describe el
-// design system §11.1 es específico de la landing (HUF-3, con el <Hero> detrás) y se agrega
-// ahí como variante, no aquí. Al hacer scroll solo se suma una sombra sutil.
+// (nexorafit-design-system, components/Header/README.md): fondo sólido siempre, para leerse
+// igual en el checkout, /acceder o cualquier página sin hero. La variante transparente sobre el
+// hero es de la landing, no de este componente. Al hacer scroll solo se suma una sombra sutil.
+// 56 px en celular y 64 px desde md; z-40 para quedar debajo de diálogos, Sheet y menús (z-50).
+// El logo se escribe en minúsculas normales (el lector de pantalla no lo deletrea); Bebas Neue
+// ya lo muestra en mayúsculas y `uppercase` lo mantiene así si la fuente no ha cargado.
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -34,13 +36,16 @@ export function Header() {
 
   return (
     <header
-      className={`dark bg-background text-foreground fixed inset-x-0 top-0 z-50 transition-shadow ${
+      className={`dark bg-background text-foreground fixed inset-x-0 top-0 z-40 transition-shadow ${
         scrolled ? "shadow-sm" : ""
       }`}
     >
-      <Container className="flex h-16 items-center justify-between">
-        <Link href="/" className="font-display text-2xl tracking-wide">
-          NEXORA FIT
+      <Container className="flex h-14 items-center justify-between gap-2 md:h-16">
+        <Link
+          href="/"
+          className="font-display shrink-0 text-2xl tracking-wide whitespace-nowrap uppercase"
+        >
+          Nexora Fit
         </Link>
 
         <nav className="hidden items-center gap-2 md:flex">
@@ -52,8 +57,9 @@ export function Header() {
           </Button>
         </nav>
 
-        <div className="flex items-center gap-2 md:hidden">
-          <Button asChild variant="outline" size="sm">
+        {/* 44 px de alto (nunca size="sm" en celular); px-3 para que quepa a 320 px. */}
+        <div className="flex items-center gap-1 md:hidden">
+          <Button asChild variant="outline" className="px-3">
             <Link href="/acceder">Ya tengo código</Link>
           </Button>
           <Sheet>
@@ -64,7 +70,7 @@ export function Header() {
             </SheetTrigger>
             <SheetContent className="dark">
               <SheetHeader>
-                <SheetTitle className="font-display text-xl">NEXORA FIT</SheetTitle>
+                <SheetTitle className="font-display text-xl uppercase">Nexora Fit</SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4">
                 <SheetClose asChild>

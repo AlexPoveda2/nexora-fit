@@ -13,7 +13,7 @@ function Progress({
     <ProgressPrimitive.Root
       data-slot="progress"
       className={cn(
-        // 8px de alto (§10.4); siempre se acompaña del texto ("5 de 24 días"), no solo la barra.
+        // 8px de alto (spec Progress); siempre se acompaña del texto ("5 de 24 días"), no solo la barra.
         "bg-muted relative flex h-2 w-full items-center overflow-x-hidden rounded-full",
         className,
       )}

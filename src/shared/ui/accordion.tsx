@@ -37,7 +37,7 @@ function AccordionTrigger({
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
-        // min-h-14 (56px) y un solo ChevronDown que gira 180° (design system §10.4), no dos
+        // min-h-14 (56px) y un solo ChevronDown que gira 180° (spec Accordion), no dos
         // íconos intercambiados.
         className={cn(
           "group/accordion-trigger focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:after:border-ring relative flex min-h-14 flex-1 items-center justify-between rounded-lg border border-transparent py-2.5 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:ring-3 disabled:pointer-events-none disabled:opacity-50",

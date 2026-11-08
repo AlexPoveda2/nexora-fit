@@ -2,6 +2,7 @@
 
 Next.js 15 (App Router) para la plataforma de planes de entrenamiento. Planeación en `docs/planeacion/`. Reglas completas en [docs/guia-desarrollo-front.md](docs/guia-desarrollo-front.md); este archivo solo enlaza y resume.
 API: repo `nexorafit-back`, contrato en `docs/planeacion/endpoints-api.md` de ese repo.
+Design system (tokens y specs): repo `nexorafit-design-system`; no editar tokens en `globals.css` a mano (bloque generado, se sincroniza desde allá).
 
 ## Reglas
 - Arquitectura limpia por features: guía §2. `eslint-plugin-boundaries` la valida (`make lint`).

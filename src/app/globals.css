@@ -1,12 +1,13 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 /* Custom variants (data-open, data-closed...) y los keyframes de accordion que generan los
-   componentes de shadcn (docs/webSite/design-system.md §9: "npx shadcn init genera una parte;
-   se ajusta a esto"). No define colores: los de abajo son los únicos que se usan. */
+   componentes de shadcn (nexorafit-design-system, docs/ADOPCION.md). No define colores: los del
+   bloque de tokens de abajo son los únicos que se usan. */
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
+/* <nexorafit-design-system:tokens> Generado desde tokens.json de nexorafit-design-system (scripts/tokens.mjs). No editar aquí: se cambia allá y se sincroniza (docs/ADOPCION.md). */
 /* 1. Paleta de marca: solo la usan los tokens semánticos y casos puntuales documentados */
 @theme {
   --color-negro: #0b0b0b;
@@ -60,6 +61,7 @@
   --cta-foreground: var(--color-blanco);
   --price: var(--color-rojo);
   --destructive: #b42318;
+  --destructive-foreground: var(--color-blanco);
   --danger: #b42318;
   --success: #15803d;
   --warning: #b45309;
@@ -116,6 +118,7 @@
   --color-cta-foreground: var(--cta-foreground);
   --color-price: var(--price);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-danger: var(--danger);
   --color-success: var(--success);
   --color-warning: var(--warning);
@@ -125,11 +128,12 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
 }
+/* </nexorafit-design-system:tokens> */
 
 @layer base {
-  /* Los anclas (/#deportes, #como-funciona) no quedan debajo de la barra fija (h-16). */
+  /* Los anclas (/#deportes, #como-funciona) no quedan debajo de la barra fija (h-14 md:h-16). */
   html {
-    @apply scroll-pt-16;
+    @apply scroll-pt-14 md:scroll-pt-16;
   }
   * {
     @apply border-border;
