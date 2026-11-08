@@ -690,6 +690,8 @@ Viven en el `ui/` de su feature (planeación del front §3). Se arman con `share
 - Siempre con `formatCop()` (guía §7): `$ 160.000`. Sin decimales.
 - El front no calcula totales: muestra `price_cop`, `full_price_cop`, `credit_cop` y `total_cop` tal como llegan.
 - El precio vigente usa `text-price`; el tachado, `muted-foreground`. Un precio nunca se muestra solo con color: el tachado lleva `line-through` y su `aria-label`.
+- **Ajuste aplicado en TF-12 (`shared/ui/price-tag.tsx`):** el tachado se anuncia con texto oculto (`sr-only` "Antes … , ahora") en vez de `aria-label`, porque los lectores de pantalla ignoran `aria-label` en `<s>` y otros elementos sin rol interactivo. En el `PackBanner` el tachado va en blanco al 100 % y no al 70 %: blanco al 70 % sobre rojo da ≈ 2,8:1 y no pasa AA para texto de 18 px.
+- `cn()` de `shared/lib/utils.ts` registra los tamaños propios (`text-hero`, `text-display-*`, `text-price-lg`) como tamaños de fuente (TF-12): sin eso, el merge los tomaba por colores y `cn("text-display-3", "text-price")` borraba el tamaño.
 
 ### 12.2 Código de acceso (`AccessCodeCard`)
 - Tarjeta con borde de 2 px `border-foreground`, etiqueta "Tu código de acceso", el código en `font-mono text-3xl tracking-[0.15em] tabular-nums` y `select-all` para copiarlo con un toque largo.
