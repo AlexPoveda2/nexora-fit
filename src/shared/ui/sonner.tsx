@@ -5,11 +5,11 @@ import {
   CircleCheckIcon,
   InfoIcon,
   TriangleAlertIcon,
-  OctagonXIcon,
+  CircleAlertIcon,
   Loader2Icon,
 } from "lucide-react";
 
-// Sin next-themes: no hay selector de tema (docs/webSite/design-system.md §9). Los colores
+// Sin next-themes: no hay selector de tema (nexorafit-design-system, docs/ADOPCION.md). Los colores
 // del toast ya siguen el tema oscuro de la sección que los rodea a través de las variables
 // --popover* (cambian solas bajo .dark).
 const Toaster = ({ ...props }: ToasterProps) => {
@@ -20,7 +20,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
         success: <CircleCheckIcon className="size-4" />,
         info: <InfoIcon className="size-4" />,
         warning: <TriangleAlertIcon className="size-4" />,
-        error: <OctagonXIcon className="size-4" />,
+        error: <CircleAlertIcon className="size-4" />,
         loading: <Loader2Icon className="size-4 animate-spin" />,
       }}
       style={
