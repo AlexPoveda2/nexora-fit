@@ -1,5 +1,6 @@
 import { screen, waitFor } from "@testing-library/react";
 
+import { AppError } from "@/shared/domain/errors";
 import { FakeHealthRepository } from "@/test/fakes/fake-health-repository";
 import { renderWithContainer } from "@/test/render";
 
@@ -15,9 +16,9 @@ it("muestra el estado reportado por el back", async () => {
   });
 });
 
-it("avisa si no puede conectarse al back", async () => {
+it("avisa si no puede conectarse al back, con el mensaje de error-messages.ts", async () => {
   const failingRepository = {
-    getHealth: () => Promise.reject(new Error("network_error")),
+    getHealth: () => Promise.reject(new AppError("NETWORK_ERROR", 0)),
   };
 
   renderWithContainer(<HealthStatus />, { health: failingRepository });
@@ -25,7 +26,7 @@ it("avisa si no puede conectarse al back", async () => {
   // El QueryClient por defecto reintenta una vez con backoff antes de marcar error.
   await waitFor(
     () => {
-      expect(screen.getByRole("alert")).toHaveTextContent("No se pudo conectar con el back.");
+      expect(screen.getByRole("alert")).toHaveTextContent("Revisa tu conexión e intenta de nuevo.");
     },
     { timeout: 3000 },
   );
