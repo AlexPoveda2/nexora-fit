@@ -28,10 +28,12 @@ export const metadata: Metadata = {
   openGraph: { title: "Nexora Fit", description, type: "website", locale: "es_CO" },
 };
 
+// El <body> reserva el alto de la BuyBar fija de /planes/[deporte] (design system §5.4) solo
+// cuando está en la página y por debajo de lg, para que no tape el final del footer.
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es-CO" className={`${bebasNeue.variable} ${inter.variable}`}>
-      <body>
+      <body className="max-lg:has-[[data-buy-bar]]:pb-[calc(4rem+env(safe-area-inset-bottom))]">
         <Providers>{children}</Providers>
         <Toaster />
       </body>

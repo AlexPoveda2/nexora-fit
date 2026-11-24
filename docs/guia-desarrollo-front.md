@@ -495,6 +495,7 @@ Es el stack de los fronts que estamos tomando de referencia (React + Next.js con
 > - **Solo lee la API la página que muestra datos de la API.** El contenido fijo (hero, bienvenida, cómo funciona) no la llama: la landing de TF-11 se genera estática y el build pasa sin API.
 > - **Cuando una página pública necesite el catálogo** (deportes y pack, TF-12), solo **durante el build** (`process.env.NEXT_PHASE === "phase-production-build"`) se captura el error de la API y la página se genera sin las secciones que dependen de ella (sin precios, sin un estado de error visible); la primera revalidación (`revalidate = 300`) la completa. **En ejecución el error no se captura:** si la API falla al revalidar, Next sigue sirviendo la última versión buena en vez de guardar una sin precios, y la primera visita sin caché cae en `error.tsx`.
 > - Se descartó hacer la página dinámica en la CI: la CI dejaría de probar el build que se despliega.
+> - **Implementado en TF-12:** `src/core/build-phase.ts` (`readOrSkipDuringBuild`) envuelve la lectura en la página. Solo absorbe `NETWORK_ERROR` (la API no responde): un 4xx/5xx o un error de mapeo rompen el build, para no publicar una landing vacía por un cambio de contrato. Sin API, la landing se genera sin deportes, pack ni acceso directo.
 
 ### 5.2 Rutas
 
@@ -681,6 +682,12 @@ nexora-fit/
 - **Mobile-first:** se escribe la clase base para celular y luego `md:` y `lg:`. Se revisa en 360 px, 768 px y 1280 px.
 - Imágenes siempre con `next/image`, con `sizes` y `priority` solo en el hero.
 - Presupuesto en la landing (Lighthouse en celular): **LCP < 2,5 s**, **CLS < 0,1**. El video del hero es corto, sin sonido, con `poster` y `preload="none"` en conexiones lentas.
+
+> **Ajuste aplicado en TF-13 (cómo se mide y qué movió el LCP):**
+> - Se mide contra `next build` + `next start`, nunca contra `next dev`. `next start` sirve HTTP/1.1 y Lighthouse (simulación Lantern) lo modela como 6 conexiones con arranque lento, lo que infla el LCP ~0,6–1 s frente a producción (HTTP/2). Para una cifra comparable se mide detrás de un proxy HTTP/2 local; la cifra con `--throttling-method=devtools` sirve de contraste.
+> - `experimental.optimizePackageImports: ["radix-ui"]` en `next.config.ts`: shadcn importa los primitivos desde el paquete `radix-ui` y, sin esto, la landing cargaba todos (First Load JS 205 kB → 135 kB).
+> - El `<Image>` del hero lleva `fetchPriority="high"` además de `priority`: en Next 15 `priority` precarga la imagen pero no le da prioridad alta.
+> - Mientras no haya video de Sam, el hero es solo la foto (el LCP); el video, cuando llegue, va con la foto como `poster`.
 
 ### 8.4 Accesibilidad mínima
 - Todo control tiene `label` visible o `aria-label`. Los errores van con `role="alert"`.
