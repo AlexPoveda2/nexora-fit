@@ -9,6 +9,7 @@ import {
   FreeSampleTeaser,
   LevelCards,
   PlanHeader,
+  SampleDayPreview,
   Syllabus,
 } from "@/features/catalog";
 import { Container } from "@/shared/ui/container";
@@ -66,7 +67,9 @@ export default async function PlanPage({ params }: { params: Params }) {
           <LevelCards levels={plan.levels} />
           <Syllabus groups={plan.syllabus} />
           {plan.freeSample && <FreeSampleTeaser sample={plan.freeSample} />}
-          {/* Día de ejemplo con bloques difuminados (planeación §4.6): TF-15. */}
+          {plan.sampleDay && (
+            <SampleDayPreview day={plan.sampleDay} planName={plan.name} product={plan.product} />
+          )}
           <EquipmentList equipment={plan.equipment} />
         </div>
         <aside aria-label="Compra">

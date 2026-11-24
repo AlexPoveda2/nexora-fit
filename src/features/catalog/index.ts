@@ -29,5 +29,6 @@ export { Includes } from "./ui/includes";
 export { LevelCards } from "./ui/level-cards";
 export { PackBanner } from "./ui/pack-banner";
 export { PlanHeader } from "./ui/plan-header";
+export { SampleDayPreview } from "./ui/sample-day-preview";
 export { SportCards } from "./ui/sport-cards";
 export { Syllabus } from "./ui/syllabus";
