@@ -6,7 +6,12 @@ const LEVEL_LABELS: Record<LevelName, string> = {
   intermediate: "Intermedio",
 };
 
+/** "Básico" o "Intermedio": el título de cada tarjeta de nivel en /planes/[deporte]. */
+export function levelLabel(level: LevelName): string {
+  return LEVEL_LABELS[level];
+}
+
 /** "Básico + Intermedio" para la insignia de la tarjeta de un deporte (planeación §3.5). */
 export function formatLevels(levels: readonly LevelName[]): string {
-  return levels.map((level) => LEVEL_LABELS[level]).join(" + ");
+  return levels.map(levelLabel).join(" + ");
 }
